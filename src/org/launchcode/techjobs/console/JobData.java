@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -54,6 +55,32 @@ public class JobData {
         return allJobs;
     }
 
+    //findByValue 1 param - search term
+    // called ln 65 in TechJobs
+
+    public static ArrayList<HashMap<String, String>> findByValue (String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> aJob : allJobs) {
+
+            for (Map.Entry<String, String> otherJobs : aJob.entrySet()) {
+
+                if (otherJobs.getValue().toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(aJob);
+                    break;
+                }
+            }
+
+        }
+        return jobs;
+    }
+
+
+
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
@@ -76,7 +103,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
